@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Music Player</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.player{
+background:#1e293b;
+padding:30px;
+border-radius:10px;
+text-align:center;
+width:300px;
+}
+
+#title{
+margin-bottom:15px;
+}
+
+.controls button{
+padding:10px;
+margin:5px;
+border:none;
+border-radius:6px;
+background:#22c55e;
+color:white;
+cursor:pointer;
+}
+
+#progress{
+width:100%;
+margin-top:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="player">
+
+<h3 id="title">Song 1</h3>
+
+<audio id="audio" src="song1.mp3"></audio>
+
+<div class="controls">
+<button onclick="prev()">⏮</button>
+<button onclick="playPause()">▶ / ⏸</button>
+<button onclick="next()">⏭</button>
+</div>
+
+<input type="range" id="progress" value="0">
+
+</div>
+
+<script>
+
+let songs = ["song1.mp3","song2.mp3"]
+let titles = ["Song 1","Song 2"]
+let index = 0
+
+let audio = document.getElementById("audio")
+let title = document.getElementById("title")
+let progress = document.getElementById("progress")
+
+function loadSong(){
+audio.src = songs[index]
+title.innerText = titles[index]
+audio.play()
+}
+
+function playPause(){
+if(audio.paused){
+audio.play()
+}else{
+audio.pause()
+}
+}
+
+function next(){
+index = (index+1) % songs.length
+loadSong()
+}
+
+function prev(){
+index = (index-1 + songs.length) % songs.length
+loadSong()
+}
+
+audio.ontimeupdate = function(){
+progress.value = (audio.currentTime / audio.duration) * 100
+}
+
+progress.oninput = function(){
+audio.currentTime = (progress.value/100) * audio.duration
+}
+
+</script>
+
+</body>
+</html>
